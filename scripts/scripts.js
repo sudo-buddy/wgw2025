@@ -141,11 +141,25 @@ function loadDelayed() {
   window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
 }
+const doExperimentation = ({ detail: payload }) => {
+  console.log('doExperimentation', payload);
+};
 
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
+  const sk = document.querySelector('aem-sidekick');
+  console.log('Adding sidekick listener');
+  if (sk) {
+    sk.addEventListener('aem:experimentation', doExperimentation);
+  } else {
+    document.addEventListener('sidekick-ready', () => {
+      console.log('Sidekick ready, adding listener');
+      document.querySelector('aem-sidekick').addEventListener('aem:experimentation', doExperimentation);
+    }, { once: true });
+  }
 }
+document.addEventListener('plugin-used', (event) => console.log('plugin-used', event));
 
 loadPage();

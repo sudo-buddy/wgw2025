@@ -1,0 +1,12 @@
+{
+    "project": "wgw2025",
+    "host": "main--wgw2025--sudo-buddy.aem.page",
+    "plugins": [
+        {
+            "id": "experimentation",
+            "title": "A/B Testing",
+            "environments": ["dev", "edit", "admin", "preview", "live", "prod"],
+            "event": "experimentation"
+        }
+    ]
+  }
