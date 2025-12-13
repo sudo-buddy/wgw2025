@@ -52,7 +52,7 @@
       const script = document.createElement('script');
       script.src = 'https://experience.adobe.com/solutions/ExpSuccess-aem-experimentation-mfe/static-assets/resources/sidekick/client.js?source=bookmarklet';
 
-      script.onload = function () {
+      script.onload = () => {
         isAEMExperimentationAppLoaded = true;
         const waitForContainer = (retries = 0, maxRetries = 20) => {
           const container = document.getElementById('aemExperimentation');
@@ -124,7 +124,7 @@
   const sidekick = document.querySelector('helix-sidekick, aem-sidekick');
   if (sidekick) {
     sidekick.addEventListener(
-      'custom:aem-experimentation-sidekick',
+      'custom:experimentation',
       handleSidekickPluginButtonClick,
     );
   } else {
@@ -136,7 +136,7 @@
         );
         if (sidekickElement) {
           sidekickElement.addEventListener(
-            'custom:aem-experimentation-sidekick',
+            'custom:experimentation',
             handleSidekickPluginButtonClick,
           );
         }
