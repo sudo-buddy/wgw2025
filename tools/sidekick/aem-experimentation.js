@@ -50,7 +50,10 @@
       }
 
       const script = document.createElement('script');
-      script.src = 'https://experience.adobe.com/solutions/ExpSuccess-aem-experimentation-mfe/static-assets/resources/sidekick/client.js?source=bookmarklet';
+      const currentUrl = window.location.href;
+      console.log('currentUrl', currentUrl);
+      // script.src = 'https://experience.adobe.com/solutions/ExpSuccess-aem-experimentation-mfe/static-assets/resources/sidekick/client.js?source=bookmarklet';
+      script.src = (currentUrl.includes('localhost') ? 'http://localhost:8080/resources/sidekick/client.js?source=bookmarklet' : 'https://experience.adobe.com/solutions/ExpSuccess-aem-experimentation-mfe/static-assets/resources/sidekick/client.js?source=bookmarklet');
 
       script.onload = () => {
         isAEMExperimentationAppLoaded = true;
@@ -70,6 +73,7 @@
       };
 
       script.onerror = reject;
+      console.log('script.src', script.src);
       document.head.appendChild(script);
     });
 
