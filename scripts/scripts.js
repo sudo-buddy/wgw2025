@@ -19,7 +19,7 @@ import {
 } from './experiment-loader.js';
 
 const experimentationConfig = {
-  prodHost: 'www.example.com',
+  prodHost: 'main--wgw2025--sudo-buddy.aem.live',
   audiences: {
     mobile: () => window.innerWidth < 600,
     desktop: () => window.innerWidth >= 600,
@@ -110,6 +110,7 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+  console.log('loadEager', doc, experimentationConfig);
   await runExperimentation(doc, experimentationConfig);
   const main = doc.querySelector('main');
   if (main) {

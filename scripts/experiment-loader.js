@@ -3,8 +3,7 @@
  * @returns {boolean} True if experimentation is enabled, false otherwise.
  */
 const isExperimentationEnabled = () => document.head.querySelector('[name^="experiment"],[name^="campaign-"],[name^="audience-"],[property^="campaign:"],[property^="audience:"]')
-|| [...document.querySelectorAll('.section-metadata div')].some((d) => d.textContent.match(/Experiment|Campaign|Audience/i));
-[...document.querySelectorAll('.section-metadata div')].some((d) => d.textContent.match(/Experiment|Campaign|Audience/i));
+  || [...document.querySelectorAll('.section-metadata div, div.metadata, .section_metadata')].some((d) => d.textContent.match(/Experiment|Campaign|Audience/i));
 
 /**
  * Loads the experimentation module (eager).
@@ -12,8 +11,11 @@ const isExperimentationEnabled = () => document.head.querySelector('[name^="expe
  * @returns {Promise<void>} A promise that resolves when the experimentation module is loaded.
  */
 export async function runExperimentation(document, config) {
+  console.log('runExperimentation', document, config);
   if (!isExperimentationEnabled()) {
+    console.log('isExperimentationEnabled', false);
     document.addEventListener('hlx:experimentation-get-config', () => {
+      console.log('hlx:experimentation-get-config', 'sending message hlx:experimentation-config');
       window.parent.postMessage({
         type: 'hlx:experimentation-config',
         config: { experiments: [], audiences: [], campaigns: [] },
@@ -23,7 +25,9 @@ export async function runExperimentation(document, config) {
 
     // Old way: postMessage (respect the old way)
     window.addEventListener('message', async (event) => {
+      console.log('message', event);
       if (event.data?.type === 'hlx:experimentation-get-config') {
+        console.log('message', 'sending message hlx:experimentation-config');
         event.source.postMessage({
           type: 'hlx:experimentation-config',
           config: { experiments: [], audiences: [], campaigns: [] },
@@ -34,7 +38,6 @@ export async function runExperimentation(document, config) {
 
     return null;
   }
-
   try {
     const { loadEager } = await import(
     // eslint-disable-next-line import/no-relative-packages

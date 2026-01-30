@@ -51,9 +51,11 @@
 
       const script = document.createElement('script');
       const currentUrl = window.location.href;
+      const topUrlParams = new URLSearchParams(window.top.location.search);
+      const isLocalEnv = topUrlParams.get('env') === 'local';
       console.log('currentUrl', currentUrl);
       // script.src = 'https://experience.adobe.com/solutions/ExpSuccess-aem-experimentation-mfe/static-assets/resources/sidekick/client.js?source=bookmarklet';
-      script.src = (currentUrl.includes('localhost') ? 'http://localhost:8080/resources/sidekick/client.js?source=bookmarklet' : 'https://experience.adobe.com/solutions/ExpSuccess-aem-experimentation-mfe/static-assets/resources/sidekick/client.js?source=bookmarklet');
+      script.src = (currentUrl.includes('localhost') || isLocalEnv ? 'https://localhost.corp.adobe.com:8080/resources/sidekick/client.js?source=plugin' : 'https://experience.adobe.com/solutions/ExpSuccess-aem-experimentation-mfe/static-assets/resources/sidekick/client.js?source=plugin');
 
       script.onload = () => {
         isAEMExperimentationAppLoaded = true;
@@ -72,8 +74,10 @@
         waitForContainer();
       };
 
-      script.onerror = reject;
-      console.log('script.src', script.src);
+      script.onerror = (error) => {
+        alert('Failed to load AEM Experimentation plugin. Please check your connection and try again.');
+        reject(error);
+      };
       document.head.appendChild(script);
     });
 
@@ -157,6 +161,7 @@
   }
 
   window.addEventListener('message', (event) => {
+    console.log('message', event);
     if (!event.data) return;
 
     const shouldReload = event.data.type === 'hlx:experimentation-window-reload'
