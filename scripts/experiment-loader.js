@@ -25,9 +25,7 @@ export async function runExperimentation(document, config) {
 
     // Old way: postMessage (respect the old way)
     window.addEventListener('message', async (event) => {
-      console.log('message', event);
       if (event.data?.type === 'hlx:experimentation-get-config') {
-        console.log('message', 'sending message hlx:experimentation-config');
         event.source.postMessage({
           type: 'hlx:experimentation-config',
           config: { experiments: [], audiences: [], campaigns: [] },

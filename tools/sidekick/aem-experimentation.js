@@ -53,9 +53,22 @@
       const currentUrl = window.location.href;
       const topUrlParams = new URLSearchParams(window.top.location.search);
       const isLocalEnv = topUrlParams.get('env') === 'local';
+      const mfeVersion = topUrlParams.get('mfeVersion') || '';
+      const backendVersion = topUrlParams.get('backendVersion') || '';
       console.log('currentUrl', currentUrl);
+      let iFrameSrc = 'https://experience.adobe.com/solutions/ExpSuccess-aem-experimentation-mfe/static-assets/resources/sidekick/client.js?source=plugin';
+      if (isLocalEnv) {
+        iFrameSrc = 'https://localhost.corp.adobe.com:8080/resources/sidekick/client.js?source=plugin';
+      }
+      if (mfeVersion) {
+        iFrameSrc += `&ExpSuccess-aem-experimentation-mfe_version=${encodeURIComponent(mfeVersion)}`;
+      }
+      if (backendVersion) {
+        iFrameSrc += `&backendVersion=${encodeURIComponent(backendVersion)}`;
+      }
+      console.log('iFrameSrc', iFrameSrc);
       // script.src = 'https://experience.adobe.com/solutions/ExpSuccess-aem-experimentation-mfe/static-assets/resources/sidekick/client.js?source=bookmarklet';
-      script.src = (currentUrl.includes('localhost') || isLocalEnv ? 'https://localhost.corp.adobe.com:8080/resources/sidekick/client.js?source=plugin' : 'https://experience.adobe.com/solutions/ExpSuccess-aem-experimentation-mfe/static-assets/resources/sidekick/client.js?source=plugin');
+      script.src = iFrameSrc;
 
       script.onload = () => {
         isAEMExperimentationAppLoaded = true;

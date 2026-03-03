@@ -450,8 +450,10 @@ function createModificationsHandler(
     const url = await getExperienceUrl(ns.config);
     let res;
     if (url && new URL(url, window.location.origin).pathname !== window.location.pathname) {
-      if (toClassName(metadata?.resolution) === 'redirect') {
+      if (toClassName(metadata?.resolution) === 'redirect' && window === window.top) {
         // Firing RUM event early since redirection will stop the rest of the JS execution
+        // Only redirect in top-level context — in UE canvas (iframe) this would
+        // conflict with the editor's navigation and cause the tab to hang.
         fireRUM(type, config, pluginOptions, url);
         window.location.replace(url);
         // eslint-disable-next-line consistent-return
@@ -1089,7 +1091,10 @@ function setupCommunicationLayer(options) {
     } else if (
       event.data?.type === 'hlx:experimentation-window-reload'
       && event.data?.action === 'reload'
+      && document.readyState === 'complete'
     ) {
+      // Only reload once the page has fully loaded — reloading during
+      // an ongoing navigation (e.g. UE navigateTo) can freeze the tab.
       window.location.reload();
     }
   });
