@@ -146,7 +146,7 @@ async function loadLazy(doc) {
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
   await showExperimentationRail(doc, experimentationConfig);
-  import('../tools/sidekick/aem-experimentation.js');
+  // import('../tools/sidekick/aem-experimentation.js');
 }
 
 /**
