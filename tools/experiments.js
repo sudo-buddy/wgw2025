@@ -1,8 +1,8 @@
+// eslint-disable-next-line import/no-unresolved
 import DA_SDK from 'https://da.live/nx/utils/sdk.js';
 
 (async function init() {
-  const { context, token, actions } = await DA_SDK;
-  console.log(context, token, actions);
+  const { context, actions } = await DA_SDK;
   Object.keys(context).forEach((key) => {
     // Heading
     const h3 = document.createElement('h3');

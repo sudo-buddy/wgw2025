@@ -1,4 +1,4 @@
-(function () {
+(function aemExperimentation() {
   function isDebugEnvironment() {
     const { host, hostname, origin } = window.location;
 
@@ -17,6 +17,7 @@
   }
 
   if (!isDebugEnvironment()) {
+    // eslint-disable-next-line no-console
     console.log(
       '[AEM Exp] Experimentation UI disabled in production environment',
     );
@@ -55,6 +56,7 @@
       const isLocalEnv = topUrlParams.get('env') === 'local';
       const mfeVersion = topUrlParams.get('mfeVersion') || '';
       const backendVersion = topUrlParams.get('backendVersion') || '';
+      // eslint-disable-next-line no-console
       console.log('currentUrl', currentUrl);
       let iFrameSrc = 'https://experience.adobe.com/solutions/ExpSuccess-aem-experimentation-mfe/static-assets/resources/sidekick/client.js?source=plugin';
       if (isLocalEnv) {
@@ -66,6 +68,7 @@
       if (backendVersion) {
         iFrameSrc += `&backendVersion=${encodeURIComponent(backendVersion)}`;
       }
+      // eslint-disable-next-line no-console
       console.log('iFrameSrc', iFrameSrc);
       // script.src = 'https://experience.adobe.com/solutions/ExpSuccess-aem-experimentation-mfe/static-assets/resources/sidekick/client.js?source=bookmarklet';
       script.src = iFrameSrc;
@@ -88,7 +91,8 @@
       };
 
       script.onerror = (error) => {
-        alert('Failed to load AEM Experimentation plugin. Please check your connection and try again.');
+        // eslint-disable-next-line no-console
+        console.error('Failed to load AEM Experimentation plugin. Please check your connection and try again.');
         reject(error);
       };
       document.head.appendChild(script);
@@ -116,6 +120,7 @@
             }
           })
           .catch((error) => {
+            // eslint-disable-next-line no-console
             console.error('[AEM Exp] Error loading app:', error);
           });
       }
@@ -129,11 +134,13 @@
       loadAEMExperimentationApp()
         .then(() => {
           if (panel) {
+            // eslint-disable-next-line no-console
             console.log('[AEM Exp] First load - showing panel');
             toggleExperimentPanel(true);
           }
         })
         .catch((error) => {
+          // eslint-disable-next-line no-console
           console.error('[AEM Exp] Failed to load:', error);
         });
     } else {
@@ -174,6 +181,7 @@
   }
 
   window.addEventListener('message', (event) => {
+    // eslint-disable-next-line no-console
     console.log('message', event);
     if (!event.data) return;
 

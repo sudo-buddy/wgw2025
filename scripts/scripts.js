@@ -110,7 +110,6 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
-  console.log('loadEager', doc, experimentationConfig);
   await runExperimentation(doc, experimentationConfig);
   const main = doc.querySelector('main');
   if (main) {

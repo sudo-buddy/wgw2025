@@ -11,11 +11,8 @@ const isExperimentationEnabled = () => document.head.querySelector('[name^="expe
  * @returns {Promise<void>} A promise that resolves when the experimentation module is loaded.
  */
 export async function runExperimentation(document, config) {
-  console.log('runExperimentation', document, config);
   if (!isExperimentationEnabled()) {
-    console.log('isExperimentationEnabled', false);
     document.addEventListener('hlx:experimentation-get-config', () => {
-      console.log('hlx:experimentation-get-config', 'sending message hlx:experimentation-config');
       window.parent.postMessage({
         type: 'hlx:experimentation-config',
         config: { experiments: [], audiences: [], campaigns: [] },
