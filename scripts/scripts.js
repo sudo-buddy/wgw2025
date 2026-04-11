@@ -19,7 +19,7 @@ import {
 } from './experiment-loader.js';
 
 const experimentationConfig = {
-  prodHost: 'main--wgw2025--sudo-buddy.aem.live',
+  prodHost: 'www.mysite.com',
   audiences: {
     mobile: () => window.innerWidth < 600,
     desktop: () => window.innerWidth >= 600,
